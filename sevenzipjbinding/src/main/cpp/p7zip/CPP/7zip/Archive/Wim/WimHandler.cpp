@@ -305,7 +305,7 @@ STDMETHODIMP CHandler::GetArchiveProperty(PROPID propID, PROPVARIANT *value)
         {
           res.Add_Space_if_NotEmpty();
           res += k_Methods[i];
-          numMethods++;
+          numMethods = true;
         }
       }
 
@@ -315,7 +315,7 @@ STDMETHODIMP CHandler::GetArchiveProperty(PROPID propID, PROPVARIANT *value)
         ConvertUInt32ToString(methodUnknown, temp);
         res.Add_Space_if_NotEmpty();
         res += temp;
-        numMethods++;
+        numMethods = true;
       }
 
       if (numMethods == 1 && chunkSizeBits != 0)

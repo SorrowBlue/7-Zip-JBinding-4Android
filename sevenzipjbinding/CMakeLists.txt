@@ -363,3 +363,5 @@ find_library(LOG-LIB
 set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "-Wl,-z,defs -Wl,--no-undefined")
 target_link_libraries(${TARGET}
         ${LOG-LIB})
+
+target_link_options("7-Zip-JBinding" PRIVATE "-Wl,-z,max-page-size=16384")
