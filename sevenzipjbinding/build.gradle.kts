@@ -1,6 +1,10 @@
+import com.android.build.api.variant.BuildConfigField
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.SonatypeHost
 import java.io.ByteArrayOutputStream
+import java.time.LocalDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.android.library")
@@ -26,12 +30,18 @@ android {
                 "proguard-rules.pro"
             )
         }
+        all {
+        }
     }
     externalNativeBuild {
         cmake {
             path = file("CMakeLists.txt")
         }
     }
+    buildFeatures {
+        buildConfig = true
+    }
+    packaging.jniLibs.keepDebugSymbols.add("**/*.so")
 }
 
 java {
@@ -43,6 +53,21 @@ java {
 
 // Provider を取得
 val gitTagProvider: Provider<String> = providers.of(GitTagValueSource::class) {}
+
+androidComponents {
+    onVariants(selector().all()) { variant ->
+        val tag = checkNotNull(gitTagProvider.orNull) { "No git tag found." }
+        val version = checkNotNull(releaseVersionOrSnapshot(tag)) { "git tag is not valid." }
+        val timeStr = LocalDateTime.now().atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        variant.buildConfigFields.set(
+            mapOf(
+                "VERSION_NAME" to BuildConfigField("String", "\"$version\"", ""),
+                "BUILT_DATE" to BuildConfigField("String", "\"$timeStr\"", "")
+            )
+        )
+    }
+}
 
 dependencies {
     testImplementation("junit:junit:4.13.2")
