@@ -12,7 +12,7 @@ version = "16.02-2.03"
 
 android {
     namespace = "net.sf.sevenzipjbinding"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         minSdk = 21
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
