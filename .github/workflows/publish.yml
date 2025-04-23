@@ -1,0 +1,55 @@
+name: Publish central.sonatype.com snapshot
+
+on:
+  push:
+    # Sequence of patterns matched against refs/heads
+    branches:
+      - master
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  pull-requests: write
+  # required for all workflows
+  security-events: write
+
+jobs:
+  publish:
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-java-gradle
+
+      - name: 🚀 Run publish
+        run: ./gradlew publishAndReleaseToMavenCentral --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALPASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALUSERNAME }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEYID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.ORG_GRADLE_PROJECT_SIGNINGINMEMORYKEYPASSWORD }}
+          ORG_GRADLE_PROJECT_SONATYPE_AUTOMATIC_RELEASE: ${{ secrets.ORG_GRADLE_PROJECT_SONATYPE_AUTOMATIC_RELEASE }}
+          ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: true
+
+  publish-snapshot:
+    if: github.event_name != 'release'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: ./.github/actions/setup-java-gradle
+
+      - name: 🚀 Run publish snapshot
+        run: ./gradlew publishAllPublicationsToMavenCentralRepository --no-configuration-cache
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALPASSWORD }}
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.ORG_GRADLE_PROJECT_MAVENCENTRALUSERNAME }}
+          ORG_GRADLE_PROJECT_SONATYPE_AUTOMATIC_RELEASE: ${{ secrets.ORG_GRADLE_PROJECT_SONATYPE_AUTOMATIC_RELEASE }}
+          ORG_GRADLE_PROJECT_RELEASE_SIGNING_ENABLED: false
