@@ -1,10 +1,6 @@
-import com.android.build.api.variant.BuildConfigField
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
 import com.vanniktech.maven.publish.SonatypeHost
 import java.io.ByteArrayOutputStream
-import java.time.LocalDateTime
-import java.time.ZoneOffset
-import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.android.library")
@@ -71,7 +67,10 @@ mavenPublishing {
         )
     )
     afterEvaluate {
-        val version = gitTagProvider.orElse("0.0.0").get()
+        var version = gitTagProvider.orElse("0.0.0").get()
+        "16.02-2.03-14-g6ea1818"
+        val versions = version.split('-')
+        version = versions.take(2).joinToString("-") + if (versions.size > 1) "-SNAPSHOT" else ""
         coordinates(groupId = group.toString(), artifactId = artifactId, version = version)
         logger.lifecycle("publish ${group}:$artifactId:$version")
     }
