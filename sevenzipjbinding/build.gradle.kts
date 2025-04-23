@@ -36,6 +36,12 @@ android {
             path = file("CMakeLists.txt")
         }
     }
+}
+
+java {
+    toolchain {
+        vendor = JvmVendorSpec.ADOPTIUM
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
 }
 
