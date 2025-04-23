@@ -67,10 +67,8 @@ mavenPublishing {
         )
     )
     afterEvaluate {
-        var version = gitTagProvider.orElse("0.0.0").get()
-        "16.02-2.03-14-g6ea1818"
-        val versions = version.split('-')
-        version = versions.take(2).joinToString("-") + if (versions.size > 1) "-SNAPSHOT" else ""
+        val tag = checkNotNull(gitTagProvider.orNull) { "No git tag found." }
+        val version = checkNotNull(releaseVersionOrSnapshot(tag)) { "git tag is not valid." }
         coordinates(groupId = group.toString(), artifactId = artifactId, version = version)
         logger.lifecycle("publish ${group}:$artifactId:$version")
     }
@@ -98,6 +96,20 @@ mavenPublishing {
             connection.set("scm:git:https://github.com/SorrowBlue/7-Zip-JBinding-4Android.git")
             developerConnection.set("scm:git:ssh://git@github.com/SorrowBlue/7-Zip-JBinding-4Android.git")
         }
+    }
+}
+
+fun releaseVersionOrSnapshot(tag: String): String? {
+    val regex = Regex("""(^\d+\.\d+\-\d+\.)(\d+)([\w-]*)$""")
+    val groups = regex.find(tag)?.groups ?: return null
+    return if (groups.size == 4) {
+        if (groups[3]?.value?.isEmpty() == true) {
+            groups.first()!!.value
+        } else {
+            "${groups[1]!!.value}${groups[2]!!.value.toInt().plus(1)}-SNAPSHOT"
+        }
+    } else {
+        null
     }
 }
 
