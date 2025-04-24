@@ -1,5 +1,5 @@
 # 7-Zip-JBinding-4Android
-![Maven Central Version](https://img.shields.io/maven-central/v/com.sorrowblue.sevenzipjbinding/7-Zip-JBinding-4Android)|
+![Maven Central Version](https://img.shields.io/maven-central/v/com.sorrowblue.sevenzipjbinding/7-Zip-JBinding-4Android)
 ![GitHub License](https://img.shields.io/github/license/SorrowBlue/7-Zip-JBinding-4Android)
 
 > Android Java wrapper for 7z archiver engine
