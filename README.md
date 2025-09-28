@@ -23,7 +23,7 @@ All features of [7-Zip-JBinding](http://sevenzipjbind.sourceforge.net/) supporte
 7-Zip was created by Igor Pavlov ([7-Zip Web Site](https://www.7-zip.org/links.html)), with 7-Zip-JBinding initially designed and implemented by Boris Brodski ([7-Zip-JBinding Web Site](http://sevenzipjbind.sourceforge.net/)). 7-Zip-JBinding was adapted for Android by Fredrik Claesson.
 
 ## Usage
-7-Zip-JBinding-4Android is currently not available on JCenter due to package name conflict with the 7-Zip-JBinding JAR library. However, it is possible to import the AAR library in Gradle from the JitPack repository.
+The 7-Zip-JBinding-4Android AAR library can be impoerted in Gradle from the JitPack repository.
 1. Add the JitPack repository to project level `build.gradle` file (example: `MyAndroidProject/build.gradle`)
 ```
 allprojects {
@@ -36,7 +36,7 @@ allprojects {
 2. Add dependency to application level `build.gradle` file (example: `MyAndroidProject/app/build.gradle`)
 ```
 dependencies {
-    implementation 'com.github.omicronapps:7-Zip-JBinding-4Android:Release-16.02-2.02'
+    implementation 'com.github.omicronapps:7-Zip-JBinding-4Android:Release-16.02-2.03'
 }
 ```
 3. Sync project
@@ -306,6 +306,11 @@ public class TestSlowExtract {
 ```
 
 ## Release Notes
+Main features of 16.02-2.03 (Release, cross-platform, based on zip/p7zip 16.02)
+* Support for 16 KB ELF alignment
+* Bugfix #31: fix hash conversion from byte[] to hex String
+  - (https://github.com/borisbrodski/sevenzipjbinding/issues/31)
+
 Main features of 16.02-2.02 (Release, cross-platform, based on zip/p7zip 16.02)
 * Bugfix #5 RandomAccessFileOutStream should implement Closeable
   - (https://github.com/borisbrodski/sevenzipjbinding/issues/5)
