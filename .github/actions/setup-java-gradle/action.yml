@@ -1,8 +1,13 @@
+name: Setup Java and Gradle
 runs:
   using: "composite"
   steps:
+    - name: Checkout
+      uses: actions/checkout@v6
+      with:
+        clean: false
     - name: Setup JDK 21
-      uses: actions/setup-java@v4
+      uses: actions/setup-java@v6
       with:
         java-version: '21'
         distribution: 'temurin'
@@ -12,4 +17,4 @@ runs:
       run: chmod +x ./gradlew
 
     - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v4
+      uses: gradle/actions/setup-gradle@v6
