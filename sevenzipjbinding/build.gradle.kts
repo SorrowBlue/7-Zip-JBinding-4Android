@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.android.library")
-    id("com.vanniktech.maven.publish") version "0.31.0"
+    id("com.vanniktech.maven.publish") version "0.36.0"
 }
 
 group = "com.sorrowblue.sevenzipjbinding"
