@@ -118,13 +118,17 @@ mavenPublishing {
 }
 
 fun releaseVersionOrSnapshot(tag: String): String? {
-    val regex = Regex("""(^\d+\.\d+\-\d+\.)(\d+)([\w-]*)$""")
+    val regex = Regex("""(^\d+\.\d+\-\d+\.)(\d+)\.(\d+)([\w-]*)$""")
     val groups = regex.find(tag)?.groups ?: return null
-    return if (groups.size == 4) {
-        if (groups[3]?.value?.isEmpty() == true) {
+    return if (groups.size == 5) {
+        if (groups[4]?.value?.isEmpty() == true) {
             groups.first()!!.value
         } else {
-            "${groups[1]!!.value}${groups[2]!!.value.toInt().plus(1)}-SNAPSHOT"
+            val original = groups[3]!!.value
+            val length = original.length
+            val nextValue = original.toInt() + 1
+            val result = nextValue.toString().padStart(length, '0')
+            "${groups[1]!!.value}${groups[2]!!.value}.${result}-SNAPSHOT"
         }
     } else {
         null
