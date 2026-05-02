@@ -1,6 +1,5 @@
 import com.android.build.api.variant.BuildConfigField
 import com.vanniktech.maven.publish.AndroidSingleVariantLibrary
-import com.vanniktech.maven.publish.SonatypeHost
 import java.io.ByteArrayOutputStream
 import java.time.LocalDateTime
 import java.time.ZoneOffset
@@ -8,7 +7,7 @@ import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.android.library")
-    id("com.vanniktech.maven.publish") version "0.31.0"
+    id("com.vanniktech.maven.publish") version "0.36.0"
 }
 
 group = "com.sorrowblue.sevenzipjbinding"
@@ -83,14 +82,8 @@ extensions.configure<PublishingExtension> {
 
 mavenPublishing {
     val artifactId = "7-Zip-JBinding-4Android"
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
-    configure(
-        AndroidSingleVariantLibrary(
-            variant = "release",
-            sourcesJar = true,
-            publishJavadocJar = true
-        )
-    )
+    publishToMavenCentral()
+    configure(AndroidSingleVariantLibrary(variant = "release"))
     afterEvaluate {
         val tag = checkNotNull(gitTagProvider.orNull) { "No git tag found." }
         val version = checkNotNull(releaseVersionOrSnapshot(tag)) { "git tag is not valid." }
