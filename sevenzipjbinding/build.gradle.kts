@@ -60,7 +60,7 @@ androidComponents {
         val version = checkNotNull(releaseVersionOrSnapshot(tag)) { "git tag is not valid." }
         val timeStr = LocalDateTime.now().atOffset(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-        variant.buildConfigFields.set(
+        variant.buildConfigFields?.set(
             mapOf(
                 "VERSION_NAME" to BuildConfigField("String", "\"$version\"", ""),
                 "BUILT_DATE" to BuildConfigField("String", "\"$timeStr\"", "")

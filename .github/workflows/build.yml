@@ -27,8 +27,5 @@ jobs:
       - name: Setup Java and Gradle
         uses: ./.github/actions/setup-java-gradle
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v4
-
       - name: Assemble release
         run: ./gradlew :sevenzipjbinding:assembleRelease
